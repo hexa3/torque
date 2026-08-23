@@ -1,0 +1,31 @@
+// Torque example 03 — plain functions, control flow, recursion.
+
+fn fib(n: int) -> int {
+    if n < 2 { return n }
+    return fib(n - 1) + fib(n - 2)
+}
+
+fn clamp01(x: f64) -> f64 {
+    if x < 0.0 { return 0.0 }
+    if x > 1.0 { return 1.0 }
+    return x
+}
+
+fn classify(angle: Angle) -> String {
+    if angle < 0deg { return "negative" }
+    else if angle < 90deg { return "acute-ish" }
+    else { return "large" }
+}
+
+fn main() {
+    for i in [1, 2, 3, 4, 5, 6] {
+        print("fib(", i, ") =", fib(i))
+    }
+    print(clamp01(-0.5), clamp01(0.37), clamp01(9.0))
+    print(classify(-10deg), "|", classify(45deg), "|", classify(170deg))
+
+    let xs = [10mm, 20mm, 30mm]
+    let total = 0mm
+    for x in xs { total = total + x }
+    print("array sum:", total)
+}

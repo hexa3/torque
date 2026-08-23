@@ -1,0 +1,43 @@
+// Torque example 06 — native pub/sub over the in-process message bus.
+// Topics are declared with a payload type and optional rate; `on` handlers
+// run when messages arrive; `publish` sends. No external broker needed.
+//
+// Run: torque run examples/06_topics.tq --for 600ms
+
+topic /setpoint: Angle @ 20hz
+topic /filtered: Angle @ 50hz
+
+live alpha = 0.3            // EMA gain, tunable at runtime
+
+let target = 0deg
+let filtered = 0deg
+
+on /setpoint -> sp {
+    target = sp                       // store latest command
+}
+
+let filter_outs = 0
+
+on /filtered -> f {
+    filter_outs = filter_outs + 1
+    if filter_outs % 10 == 0 {
+        print("[filter] out:", f.to(deg))
+    }
+}
+
+// Producer: publishes a square-wave setpoint between two angles.
+loop source @ 10hz, deadline: 2ms {
+    if (tick / 5) % 2 == 0 { publish(/setpoint, 30deg) }
+    else                    { publish(/setpoint, 100deg) }
+}
+
+// Consumer: exponential moving average toward the latest setpoint.
+loop filter @ 50hz, deadline: 2ms {
+    filtered = filtered + (target - filtered) * alpha
+    publish(/filtered, filtered)
+}
+
+fn main() {
+    run_for(500ms)
+    print("final filtered:", filtered.to(deg))
+}

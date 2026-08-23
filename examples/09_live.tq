@@ -1,0 +1,24 @@
+// Torque example 09 — live-tunable parameters.
+// `live` variables can be changed WHILE loops run, from the stdin REPL:
+//
+//   torque run examples/09_live.tq --for 30s
+//   then type:   set kp 8     (watch oscillation frequency jump)
+//                stats
+//                quit
+//
+// Automated proof (no typing): run with --tune "kp=8@1s" — see tests.
+
+live kp = 1.5
+
+let phase = 0deg
+
+loop osc @ 100hz, deadline: 2ms {
+    phase = phase + 6deg * kp
+    if tick % 20 == 0 {
+        print("[osc] sin(phase) =", sin(phase))
+    }
+}
+
+fn main() {
+    run_for(2600ms)
+}

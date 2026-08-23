@@ -1,0 +1,25 @@
+// Torque example 10 — 3D transforms and parent-frame tracking.
+//
+// Run: torque run examples/10_frames.tq
+
+let base = frame("base")                                            // root frame
+let swing = frame("swing", base,
+    transform(vec3(1m, 0mm, 0mm), vec3(0deg, 0deg, 90deg)))         // child of base
+let tip = frame("tip", swing,
+    transform(vec3(500mm, 0mm, 0mm), vec3(0deg, 0deg, 0deg)))       // grandchild
+
+fn main() {
+    // A point expressed in `tip` coordinates...
+    let p_tip = vec3(100mm, 0mm, 0mm)
+
+    // ...mapped into `base` coordinates through the parent chain.
+    let p_base = apply(world_transform(tip), p_tip)
+
+    print("p in tip :", p_tip)
+    print("p in base:", p_base)     // rotZ(90deg) yaw sends +x to +y:
+                                    // -> (1 m, 600 mm, 0 mm)
+
+    // Frames remember their parents; re-placing a parent moves children.
+    place(swing, transform(vec3(2m, 0mm, 0mm), vec3(0deg, 0deg, 90deg)))
+    print("after re-place:", apply(world_transform(tip), p_tip))
+}

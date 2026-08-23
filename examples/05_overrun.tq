@@ -1,0 +1,14 @@
+// Torque example 05 — deadline overrun detection.
+// This loop declares a 500us deadline but deliberately burns 5ms of CPU per
+// tick with the busy-wait builtin `spin`. The runtime detects every overrun
+// and prints warnings; the end-of-run report shows the real achieved rate.
+//
+// Run: torque run examples/05_overrun.tq --for 300ms
+
+loop too_slow @ 200hz, deadline: 500us {
+    spin(5ms)   // simulate work that blows the budget
+}
+
+fn main() {
+    run_for(250ms)
+}

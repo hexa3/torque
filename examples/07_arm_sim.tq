@@ -1,0 +1,62 @@
+// Torque example 07 — THE FLAGSHIP: closed-loop control of a simulated
+// 3-DOF arm, with pub/sub joint-state telemetry and live-tunable speed.
+//
+// The SAME file runs against the serial backend:
+//   torque run examples/07_arm_sim.tq --for 3s                 (sim)
+//   torque run examples/07_arm_sim.tq --backend serial \
+//       --port /dev/ttyUSB0 --for 3s                           (hardware)
+
+topic /joint_state: Vec3 @ 25hz
+
+live speed = 1.0              // tunable at runtime via the REPL
+
+// Waypoints as [base_yaw, shoulder_pitch, elbow_pitch] targets.
+let waypoints = [
+    vec3(45deg, 30deg, -20deg),
+    vec3(-60deg, 60deg, 40deg),
+    vec3(90deg, 10deg, -45deg),
+]
+
+let wp_index = 0
+let last_switch = 0ms
+
+// Kinematic chain with parent-frame tracking.
+let base = frame("base")
+let link1 = frame("link1", base, transform(vec3(0mm, 0mm, 80mm), vec3(0deg, 0deg, 0deg)))
+let link2 = frame("link2", link1, transform(vec3(120mm, 0mm, 0mm), vec3(0deg, 0deg, 0deg)))
+let tool = frame("tool", link2, transform(vec3(100mm, 0mm, 0mm), vec3(0deg, 0deg, 0deg)))
+
+let ee_ticks = 0
+
+on /joint_state -> js {
+    ee_ticks = ee_ticks + 1
+    if ee_ticks % 5 == 0 {
+        place(link1, transform(vec3(0mm, 0mm, 80mm), vec3(js.x, 0deg, 0deg)))
+        place(link2, transform(vec3(120mm, 0mm, 0mm), vec3(0deg, js.y, 0deg)))
+        place(tool, transform(vec3(100mm, 0mm, 0mm), vec3(0deg, js.z, 0deg)))
+        let ee = apply(world_transform(tool), vec3(0mm, 0mm, 0mm))
+        print("[ee]", ee.x.to(mm), ee.y.to(mm), ee.z.to(mm))
+    }
+}
+
+loop control @ 50hz, deadline: 4ms {
+    // Advance through waypoints every second of loop time.
+    if now() - last_switch > 800ms {
+        wp_index = (wp_index + 1) % len(waypoints)
+        last_switch = now()
+        print("[control] -> waypoint", wp_index, waypoints[wp_index])
+    }
+
+    // Closed-loop P-style nudge toward the active waypoint,
+    // scaled by the `speed` live variable.
+    let tgt = waypoints[wp_index]
+    let cur = read("angles")
+    let cmd = cur + (tgt - cur) * 0.5 * speed
+    write("targets", cmd)
+    publish(/joint_state, cur)
+}
+
+fn main() {
+    print("[main] arming loops; backend sees 3 joints")
+    run_for(2600ms)
+}

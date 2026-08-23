@@ -1,0 +1,13 @@
+// Torque example 02 — dimensional analysis REJECTS this program.
+// Adding a Length to an Angle is physically meaningless; Torque aborts
+// with a precise runtime error instead of silently computing garbage.
+//
+// Run: torque run examples/02_unit_error.tq ; echo "exit=$?"
+
+fn main() {
+    let a = 1m
+    let b = 45deg
+    print("about to add incompatible units...")
+    let bad = a + b          // <- error: cannot add Length and Angle
+    print("never reached:", bad)
+}

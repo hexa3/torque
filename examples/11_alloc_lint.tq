@@ -1,0 +1,17 @@
+// Torque example 11 — memory-safety lint demo (this file FAILS on purpose).
+// Armed loop bodies must not dynamically allocate. This loop builds an
+// array literal every tick, so the checker rejects it before the program
+// ever runs:
+//
+//   torque check examples/11_alloc_lint.tq
+//   -> [alloc-lint] error: dynamic allocation 'array literal' inside armed
+//      loop 'leaky' at examples/11_alloc_lint.tq:9:19
+
+loop leaky @ 100hz, deadline: 1ms {
+    let xs = [tick, tick, tick]
+    print(xs[0])
+}
+
+fn main() {
+    run_for(100ms)
+}

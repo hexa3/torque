@@ -1,0 +1,20 @@
+{
+  "name": "torque",
+  "version": "0.1.0",
+  "description": "Torque: a real-time robotics control language with physical units, deterministic loops, pub/sub, backend swap, and LLM tool export",
+  "type": "module",
+  "bin": {
+    "torque": "./src/cli.ts"
+  },
+  "scripts": {
+    "start": "node src/cli.ts",
+    "test": "node --test \"tests/*.test.ts\"",
+    "demo": "bash demo/run_demo.sh"
+  },
+  "engines": {
+    "node": ">=22.6"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0"
+  }
+}

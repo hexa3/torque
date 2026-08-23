@@ -1,0 +1,16 @@
+// Torque example 04 — a well-behaved deterministic control loop.
+// Declares 50hz with a 2ms deadline. The runtime measures every tick;
+// this one stays within budget, so no overrun warnings appear and the
+// end-of-run report shows ~50 ticks/sec achieved.
+//
+// Run: torque run examples/04_blink.tq --for 400ms
+
+loop heartbeat @ 50hz, deadline: 2ms {
+    if tick % 10 == 0 {
+        print("[heartbeat] tick", tick, "at", now())
+    }
+}
+
+fn main() {
+    run_for(400ms)
+}

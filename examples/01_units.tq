@@ -1,0 +1,42 @@
+// Torque example 01 — physical units as first-class values.
+// Run: torque run examples/01_units.tq
+
+fn total_length(a: Length, b: Length) -> Length {
+    return a + b
+}
+
+fn main() {
+    // Unit literals attach dimensions at parse time.
+    let a = 120mm
+    let b = 30cm
+    let sum = total_length(a, b)
+    print("sum of", a, "+", b, "=", sum)
+
+    // Explicit conversion via .to(unit)
+    print("sum in meters:", sum.to(m))
+    print("sum in inches:", sum.to(inch))
+
+    // Angles
+    let half = 180deg / 2          // Angle / number -> Angle
+    print("half turn:", half.to(rad))
+
+    // Durations compose
+    let t = 250ms + 750ms
+    print("t =", t.to(s), "=", t.to(ms))
+
+    // Derived quantities keep their dimensions
+    let v = 10m / 2s               // -> Velocity
+    print("velocity:", v)
+
+    // Dimensional analysis catches mistakes at runtime:
+    // let bad = 1m + 1deg        // <- would abort: cannot add Length and Angle
+    // total_length(1m, 45deg)    // <- would abort: expected Length, got Angle
+
+    // Comparisons work across scales of the same dimension
+    if 1500mm > 1m {
+        print("1500mm is greater than 1m")
+    }
+
+    // Plain numbers are dimensionless; mixing them into lengths errors too:
+    // let nope = 5 + 3m          // <- would abort: cannot add dimensionless and Length
+}

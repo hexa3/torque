@@ -1,0 +1,10 @@
+// Sweep servo 1 with a ~1s sine cycle: -0deg..+90deg around 45deg.
+// Trig is strict in Torque — sin() takes an Angle — so accumulate a phase
+// instead of feeding it wall-clock time (7.2deg x 50 ticks/s = 360deg/s).
+let phase = 0deg
+
+loop sweep @ 50hz, deadline: 4ms {
+    phase = phase + 7.2deg
+    let angle = 45deg + 45deg * sin(phase)
+    write("targets", vec3(angle, 0deg, 0deg))
+}

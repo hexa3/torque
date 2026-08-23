@@ -1,0 +1,35 @@
+// Torque example 08 — LLM tool-calling export.
+// Functions annotated #[tool("...")] are exported as Anthropic-API /
+// MCP-compatible JSON tool definitions:
+//
+//   torque tools examples/08_tools.tq
+//
+// The emitted JSON can be pasted straight into an Anthropic API `tools`
+// array or an MCP server manifest.
+
+let speed = 1.0
+
+#[tool("Move the robot end-effector to a target position. X, Y, Z given as lengths; units convert automatically.")]
+fn move_to(x: Length, y: Length, z: Length) -> String {
+    print("[move_to]", x.to(mm), y.to(mm), z.to(mm))
+    return "moving"
+}
+
+#[tool("Set robot speed scale, 0.0 (frozen) to 1.0 (full speed)")]
+fn set_speed(s: f64) -> Bool {
+    if s < 0.0 { return false }
+    if s > 1.0 { return false }
+    speed = s
+    return true
+}
+
+#[tool("Read the current joint angles of the arm in degrees")]
+fn read_joints() -> Vec3 {
+    let js = read("angles")
+    print("[read_joints]", js)
+    return js
+}
+
+fn main() {
+    print("annotated functions: move_to, set_speed, read_joints")
+}
