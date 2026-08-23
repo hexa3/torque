@@ -32,7 +32,7 @@ loop control @ 50hz, deadline: 4ms {
 Requires **Node.js ≥ 22.6** (`node --version`). Nothing else.
 
 ```bash
-git clone https://github.com/ibnshafi/torque && cd torque
+git clone https://github.com/hexa3/torque && cd torque
 
 # Flagship demo: closed-loop control of a simulated 3-DOF arm (~50hz, zero overruns)
 node src/cli.ts run examples/07_arm_sim.tq --for 3s
@@ -328,4 +328,4 @@ with fake firmware, not against physical servos.
 
 [MIT](LICENSE)
 
-Part of a robotics & simulation series with [helios](https://github.com/ibnshafi/helios), [drag_sim](https://github.com/ibnshafi/drag_sim), and [block_craftz](https://github.com/ibnshafi/block_craftz).
+Part of a robotics & simulation series with [helios](https://github.com/hexa3/helios), [drag_sim](https://github.com/hexa3/drag_sim), and [block_craftz](https://github.com/hexa3/block_craftz).

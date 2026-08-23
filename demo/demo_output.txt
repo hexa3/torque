@@ -16,54 +16,54 @@ runtime error: type error: cannot add Length and Angle
 [1;36m═══ 3. Deterministic control loop, deadline met (examples/04_blink.tq --for 400ms) ═══[0m
 ── alloc-lint warnings ──────────────────────────────
 [alloc-warn] examples/04_blink.tq:10:14: print() may allocate; fine for debugging, avoid in hard-real-time deployments (further print() uses in 'heartbeat' not repeated)
-[heartbeat] tick 0 at 0.013 s
-[heartbeat] tick 10 at 0.209 s
-[heartbeat] tick 20 at 0.409 s
+[heartbeat] tick 0 at 0.02 s
+[heartbeat] tick 10 at 0.211 s
+[heartbeat] tick 20 at 0.412 s
 ── loop report ──────────────────────────────────────────────
 loop             hz   deadline   ticks  overruns  missed   max-tick  achieved-hz
-heartbeat        50     2000us      21         0       0     1245us        49.63
+heartbeat        50     2000us      21         0       0     1750us         49.5
 ──────────────────────────────────────────────────────────────
 
 [1;36m═══ 4. Deadline overrun detection (examples/05_overrun.tq --for 250ms) ═══[0m
-[overrun] loop 'too_slow' tick took 5142us (deadline 500us) — 1 overrun(s) so far
+[overrun] loop 'too_slow' tick took 5298us (deadline 500us) — 1 overrun(s) so far
 ── loop report ──────────────────────────────────────────────
 loop             hz   deadline   ticks  overruns  missed   max-tick  achieved-hz
-too_slow        200      500us      41        41       1     5142us       157.48
+too_slow        200      500us      38        38       2     5350us        145.1
 ──────────────────────────────────────────────────────────────
 
 [1;36m═══ 5. THE FLAGSHIP — closed-loop 3-DOF arm on the sim backend (examples/07_arm_sim.tq) ═══[0m
 [alloc-warn] examples/07_arm_sim.tq:47:14: print() may allocate; fine for debugging, avoid in hard-real-time deployments (further print() uses in 'control' not repeated)
 [main] arming loops; backend sees 3 joints
-[ee] 217.622 mm 4.699 mm 58.837 mm
-[ee] 208.51 mm 22.442 mm 39.229 mm
-[ee] 206.664 mm 34.246 mm 43.716 mm
-[ee] 206.604 mm 35.321 mm 44.615 mm
-[ee] 206.603 mm 35.354 mm 44.644 mm
-[ee] 206.603 mm 35.355 mm 44.645 mm
+[ee] 217.971 mm 4.017 mm 60.365 mm
+[ee] 208.861 mm 21.403 mm 39.433 mm
+[ee] 206.676 mm 33.953 mm 43.47 mm
+[ee] 206.605 mm 35.312 mm 44.607 mm
+[ee] 206.603 mm 35.354 mm 44.643 mm
 [ee] 206.603 mm 35.355 mm 44.645 mm
 [ee] 206.603 mm 35.355 mm 44.645 mm
 [control] -> waypoint 1 (-1.047 rad, 60 deg, 40 deg)
-[ee] 193.179 mm 36.153 mm 22.226 mm
-[ee] 173.069 mm 23.092 mm -1.55 mm
-[ee] 170.097 mm -0.487 mm -6.545 mm
-[ee] 170.003 mm -24.564 mm -3.044 mm
-[ee] 170 mm -46.803 mm 7.134 mm
-[ee] 170 mm -65.381 mm 23.208 mm
-[ee] 170 mm -74.568 mm 35.958 mm
-[ee] 170 mm -74.987 mm 36.676 mm
+[ee] 206.603 mm 35.355 mm 44.645 mm
+[ee] 189.316 mm 34.813 mm 16.886 mm
+[ee] 171.607 mm 18.712 mm -3.586 mm
+[ee] 170.05 mm -5.404 mm -6.405 mm
+[ee] 170.002 mm -29.167 mm -1.542 mm
+[ee] 170 mm -50.761 mm 9.834 mm
+[ee] 170 mm -68.301 mm 26.755 mm
+[ee] 170 mm -74.777 mm 36.314 mm
 [control] -> waypoint 2 (90 deg, 10 deg, -0.785 rad)
-[ee] 183.885 mm -59.183 mm 30.847 mm
-[ee] 202.784 mm -31.465 mm 33.559 mm
-[ee] 215.133 mm -9.495 mm 50.681 mm
-[ee] 218.392 mm -0.546 mm 62.146 mm
+[ee] 170 mm -74.993 mm 36.687 mm
+[ee] 192.055 mm -48.073 mm 30.029 mm
+[ee] 208.515 mm -21.645 mm 38.809 mm
+[ee] 217.669 mm -4.264 mm 58.963 mm
+[ee] 218.458 mm 1.422 mm 62.564 mm
 ── loop report ──────────────────────────────────────────────
 loop             hz   deadline   ticks  overruns  missed   max-tick  achieved-hz
-control          50     4000us     101         0       0      681us           50
+control          50     4000us     101         0       0     2884us        49.93
 ──────────────────────────────────────────────────────────────
 
 [1;36m═══ 6. Same arm source over REAL serial bytes to a fake PCA9685 firmware ═══[0m
-[ee] 208.163 mm 31.707 mm 45.044 mm
-[ee] 206.637 mm 35.313 mm 44.687 mm
+[ee] 209.664 mm 28.109 mm 45.791 mm
+[ee] 206.794 mm 34.954 mm 44.715 mm
 [ee] 206.637 mm 35.313 mm 44.687 mm
 [ee] 206.637 mm 35.313 mm 44.687 mm
 [ee] 206.637 mm 35.313 mm 44.687 mm
