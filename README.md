@@ -321,3 +321,11 @@ what is future work. Headlines: units are checked at runtime not compile time; d
 is best-effort scheduling with measurement, not WCET proof; the allocation lint is syntactic
 and transitive, not a borrow checker; the serial backend was verified against kernel PTYs
 with fake firmware, not against physical servos.
+
+---
+
+## License
+
+[MIT](LICENSE)
+
+Part of a robotics & simulation series with [helios](https://github.com/ibnshafi/helios), [drag_sim](https://github.com/ibnshafi/drag_sim), and [block_craftz](https://github.com/ibnshafi/block_craftz).
