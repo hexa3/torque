@@ -329,3 +329,7 @@ with fake firmware, not against physical servos.
 [MIT](LICENSE)
 
 Part of a robotics & simulation series with [helios](https://github.com/hexa3/helios), [drag_sim](https://github.com/hexa3/drag_sim), and [block_craftz](https://github.com/hexa3/block_craftz).
+
+---
+
+<p align="center">Built by <a href="https://sheheryar.xyz">Sheheryar</a> · <a href="https://github.com/hexa3">github.com/hexa3</a></p>
